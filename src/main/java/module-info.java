@@ -3,6 +3,8 @@ module edu.wsu.seniorproject {
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
+    requires firebase.admin;
+    requires com.google.auth.oauth2;
 
     opens edu.wsu.seniorproject to javafx.fxml;
     exports edu.wsu.seniorproject;
