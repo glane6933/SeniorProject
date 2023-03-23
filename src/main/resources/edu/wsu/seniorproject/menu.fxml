@@ -7,8 +7,9 @@
 
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-            prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
-    <Button alignment="CENTER" layoutX="220.0" layoutY="280.0" mnemonicParsing="false" prefHeight="40.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/19"
+            fx:controller="edu.wsu.seniorproject.controller.MenuController" xmlns:fx="http://javafx.com/fxml/1">
+    <Button alignment="CENTER" layoutX="220.0" layoutY="280.0" mnemonicParsing="false" onAction="#startGame" prefHeight="40.0"
             prefWidth="160.0" text="Start Game" textAlignment="CENTER">
         <font>
           <Font name="Times New Roman Italic" size="20.0"/>

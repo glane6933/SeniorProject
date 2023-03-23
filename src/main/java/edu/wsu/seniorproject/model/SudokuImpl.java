@@ -1,31 +1,31 @@
 package edu.wsu.seniorproject.model;
 
-import edu.wsu.seniorproject.view.GameView;
-import edu.wsu.seniorproject.view.MenuView;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
 
-public class SudokuImpl extends Observable implements Sudoku {
+public class SudokuImpl extends Sudoku {
+    public static final int BOARD_SIZE = 9;
+
     private int[][] puzzle;
     private int[][] solution;
     private boolean[][] check;
     private int choice;
-    String playerName;
-    int score;
-    int winStatus;
-    GameView gameView;
-    MenuView menuView;
+    private GameState state;
+    private String playerName;
+    private int score;
+    private int winStatus;
+
 
     public SudokuImpl() {
+        state = GameState.NOT_RUNNING;
+    }
+
+    @Override
+    public void startGame() {
         createGrid();
-        check = new boolean[9][9];
-        score = 0;
-        playerName = "";
-        winStatus = 0;
+        check = new boolean[BOARD_SIZE][BOARD_SIZE];
     }
 
     @Override
@@ -41,19 +41,19 @@ public class SudokuImpl extends Observable implements Sudoku {
     @Override
     public void createGrid() {
         //create a solution grid
-        solution = createSolution(new int[9][9], 0);
+        solution = createSolution(new int[BOARD_SIZE][BOARD_SIZE], 0);
         //create the puzzle grid
         puzzle = createPuzzle(duplicate(solution));
         //observer stuff
         setChanged();
-        notifyObservers(Update.START_GAME);
+        notifyObservers(GameState.RUNNING);
     }
 
     @Override
     public void endGame() {
         checkStatus();
         setChanged();
-        notifyObservers(Update.END_GAME);
+        notifyObservers(GameState.COMPLETED);
     }
 
     @Override
@@ -61,14 +61,14 @@ public class SudokuImpl extends Observable implements Sudoku {
         checkStatus();
         choice = 0;
         setChanged();
-        notifyObservers(Update.CHECK_GAME);
+        notifyObservers(GameState.CHECK);
     }
 
     @Override
     public void setChoice(int choice) {
         this.choice = choice;
         setChanged();
-        notifyObservers(Update.CHOICE);
+        notifyObservers(GameState.CHOICE);
     }
 
     @Override
@@ -248,15 +248,5 @@ public class SudokuImpl extends Observable implements Sudoku {
             }
         }
         return true;
-    }
-
-    @Override
-    public void setGameView(GameView view) {
-        gameView = view;
-    }
-
-    @Override
-    public void setMenuView(MenuView view) {
-        menuView = view;
     }
 }
