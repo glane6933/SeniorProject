@@ -3,6 +3,7 @@ package edu.wsu.seniorproject;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
+import com.google.firebase.cloud.FirestoreClient;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -30,6 +31,7 @@ public class App extends Application {
 //                .build();
 //
 //        FirebaseApp.initializeApp(options);
+//        Firestore db = FirestoreClient.getFirestore();
         launch();
     }
 }
