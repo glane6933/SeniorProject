@@ -1,8 +1,8 @@
-package edu.wsu.seniorproject.model;
+package edu.wsu.model;
 
 import org.junit.jupiter.api.Test;
 
-class SudokuImplTest {
+class SudokuTest {
 
     @Test
     void getPuzzle() {

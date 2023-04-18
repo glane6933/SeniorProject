@@ -1,82 +1,121 @@
-package edu.wsu.seniorproject.model;
+package edu.wsu.model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class SudokuImpl extends Sudoku {
+public class Sudoku {
     public static final int BOARD_SIZE = 9;
 
+    public GameState state;
+    private static Sudoku gameInstance;
     private int[][] puzzle;
     private int[][] solution;
     private boolean[][] check;
     private int choice;
-    private GameState state;
-    private String playerName;
+    Difficulty difficulty;
+    private boolean numberSelected;
     private int score;
-    private int winStatus;
 
 
-    public SudokuImpl() {
+    private Sudoku() {
         state = GameState.NOT_RUNNING;
+        score = 1000;
     }
 
-    @Override
-    public void startGame() {
+    public static Sudoku getInstance() {
+        if(gameInstance == null) {
+            gameInstance = new Sudoku();
+        }
+        return gameInstance;
+    }
+
+    public void togglePause() {
+        if(state == GameState.PAUSED) {
+            state = GameState.RUNNING;
+        } else {
+            state = GameState.PAUSED;
+        }
+    }
+
+    public void update(double time) {
+        if(state == GameState.PAUSED) return;
+
+        if(time % 10 == 0) {
+            score -= 10;
+        }
+    }
+
+    public void startNewGame() {
         createGrid();
+        state = GameState.RUNNING;
+        score = 1000;
+        numberSelected = false;
         check = new boolean[BOARD_SIZE][BOARD_SIZE];
     }
 
-    @Override
+    public void setDifficulty(Difficulty difficulty) {
+        switch(difficulty) {
+            case EASY:
+                this.difficulty = Difficulty.EASY;
+                // remove the least amount of numbers from solution
+                break;
+            case MEDIUM:
+                this.difficulty = Difficulty.MEDIUM;
+                // remove a medium amount of numbers from solution
+                break;
+            case HARD:
+                this.difficulty = Difficulty.HARD;
+                // remove the most amount of numbers from solution
+                break;
+        }
+    }
+
+    public boolean isNumberSelected() {
+        return numberSelected;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
     public int[][] getPuzzle() {
         return puzzle;
     }
 
-    @Override
     public int[][] getSolution() {
         return solution;
     }
 
-    @Override
     public void createGrid() {
         //create a solution grid
         solution = createSolution(new int[BOARD_SIZE][BOARD_SIZE], 0);
         //create the puzzle grid
         puzzle = createPuzzle(duplicate(solution));
-        //observer stuff
-        setChanged();
-        notifyObservers(GameState.RUNNING);
     }
 
-    @Override
     public void endGame() {
         checkStatus();
-        setChanged();
-        notifyObservers(GameState.COMPLETED);
+        state = GameState.COMPLETED;
     }
 
-    @Override
     public void checkIfGameOver() {
         checkStatus();
         choice = 0;
-        setChanged();
-        notifyObservers(GameState.CHECK);
+        state = GameState.CHECK;
     }
 
-    @Override
     public void setChoice(int choice) {
         this.choice = choice;
-        setChanged();
-        notifyObservers(GameState.CHOICE);
+        state = GameState.CHOICE;
     }
 
-    @Override
     public int getChoice() {
         return choice;
     }
 
-    @Override
     public void checkStatus() {
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
@@ -92,7 +131,6 @@ public class SudokuImpl extends Sudoku {
      * @param idx    An integer representing the index of the next box to be filled in the puzzle.
      * @return A 2D integer array representing the completed Sudoku puzzle, or an array of size 0x0 if no solution was found.
      */
-    @Override
     public int[][] createSolution(int[][] puzzle, int idx) {
         if(idx>80) {
             return puzzle;
@@ -101,7 +139,7 @@ public class SudokuImpl extends Sudoku {
         int y = idx / 9;
 
         List<Integer> nums = new ArrayList<>();
-        for(int i = 0; i <= 9; i++) {
+        for(int i = 1; i <= 9; i++) {
             nums.add(i);
         }
         Collections.shuffle(nums);
@@ -109,7 +147,7 @@ public class SudokuImpl extends Sudoku {
         while(!nums.isEmpty()) {
             int num = nextNum(puzzle, x, y, nums);
             if(num == -1) {
-                return new int[0][0];
+                return null;
             }
             puzzle[y][x] = num;
             int[][] tmp = createSolution(puzzle, idx + 1);
@@ -118,7 +156,7 @@ public class SudokuImpl extends Sudoku {
             }
             puzzle[y][x] = 0;
         }
-        return new int[0][0];
+        return null;
     }
 
     /**
@@ -127,7 +165,6 @@ public class SudokuImpl extends Sudoku {
      * @param puzzle A 2D integer array representing a completed Sudoku puzzle.
      * @return A new 2D integer array representing a partially completed Sudoku puzzle.
      */
-    @Override
     public int[][] createPuzzle(int[][] puzzle) {
         List<Integer> places = new ArrayList<>();
         for(int i = 0; i < 81; i++) {
@@ -145,9 +182,8 @@ public class SudokuImpl extends Sudoku {
      * @param places A list of shuffled integers representing cell indices in the 9x9 Sudoku grid.
      * @return A new 2D integer array representing a possibly completed Sudoku puzzle.
      */
-    @Override
     public int[][] createPuzzle(int[][] puzzle, List<Integer> places) {
-        while(!places.isEmpty()) {
+        while(places.size() > 0) {
             int pos = places.remove(0);
             int x = pos % 9;
             int y = pos / 9;
@@ -161,12 +197,10 @@ public class SudokuImpl extends Sudoku {
         return puzzle;
     }
 
-    @Override
     public boolean isValid(int[][] puzzle) {
         return isValid(puzzle, 0, new int[] { 0 });
     }
 
-    @Override
     public boolean isValid(int[][] puzzle, int idx, int[] solutionNum) {
         if(idx > 80) {
             return ++solutionNum[0] == 1;
@@ -196,12 +230,10 @@ public class SudokuImpl extends Sudoku {
         return true;
     }
 
-    @Override
     public int[][] duplicate(int[][] puzzle) {
         return Arrays.copyOf(puzzle, puzzle.length);
     }
 
-    @Override
     public int nextNum(int[][] puzzle, int x, int y, List<Integer> nums) {
         while(!nums.isEmpty()) {
             int num = nums.remove(0);
@@ -216,7 +248,6 @@ public class SudokuImpl extends Sudoku {
     Checks if num is present in the 3x3 block. If found, return false (not placeable).
     Otherwise, return true (is placeable).
      */
-    @Override
     public boolean checkBlock(int[][] puzzle, int x, int y, int num) {
         int xCheck = x < 3 ? 0 : x < 6 ? 3 : 6;
         int yCheck = y < 3 ? 0 : y < 6 ? 3 : 6;
@@ -230,7 +261,6 @@ public class SudokuImpl extends Sudoku {
         return true;
     }
 
-    @Override
     public boolean checkY(int[][] puzzle, int x, int num) {
         for(int i = 0; i < 9; i++) {
             if(puzzle[i][x] == num) {
@@ -240,7 +270,6 @@ public class SudokuImpl extends Sudoku {
         return true;
     }
 
-    @Override
     public boolean checkX(int[][] puzzle, int y, int num) {
         for(int i = 0; i < 9; i++) {
             if(puzzle[y][i] == num) {

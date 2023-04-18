@@ -6,8 +6,12 @@ module edu.wsu.seniorproject {
     requires firebase.admin;
     requires com.google.auth.oauth2;
 
-    opens edu.wsu.seniorproject to javafx.fxml;
-    exports edu.wsu.seniorproject;
-    exports edu.wsu.seniorproject.controller;
-    opens edu.wsu.seniorproject.controller to javafx.fxml;
+    opens edu.wsu to javafx.fxml;
+    exports edu.wsu;
+
+    opens edu.wsu.controller to javafx.fxml;
+    exports edu.wsu.controller;
+
+    opens edu.wsu.view to javafx.fxml;
+    exports edu.wsu.view;
 }
