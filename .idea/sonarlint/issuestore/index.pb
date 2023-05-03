@@ -20,3 +20,7 @@ G.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,e\d\ed
 +src/main/java/edu/wsu/model/Difficulty.java,9\2\9253f43ca2f9979c655504eb8e460ade4ccce5d4
 [
 +src/test/java/edu/wsu/model/SudokuTest.java,b\f\bf7789b2c27ca24ffe4014296013d11c25000b12
+Z
+*src/main/java/edu/wsu/model/GameState.java,f\8\f872ff7f8470440abb428f7e10edd0518692d122
+Y
+)src/main/java/edu/wsu/view/PausePane.java,5\2\52a697cc15ce5cda6104d8cd9263d6e74dbc4a53

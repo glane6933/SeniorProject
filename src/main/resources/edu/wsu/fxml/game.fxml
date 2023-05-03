@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane fx:id="gameRoot" prefHeight="700.0" prefWidth="500.0" style="-fx-background-color: LAVENDER;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.wsu.controller.GameController">
+    <BorderPane prefHeight="700.0" prefWidth="500.0">
+
+        <top>
+            <AnchorPane fx:id="hud" prefHeight="142.0" prefWidth="500.0">
+                <Label fx:id="title" alignment="TOP_CENTER" layoutX="148.0" layoutY="35.0" text="Sudoku" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font name="Forte" size="64.0" />
+                    </font>
+                </Label>
+
+                <Label fx:id="time" alignment="TOP_LEFT" layoutX="44.0" layoutY="7.0" text="0000" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
+                    <font>
+                        <Font name="Forte" size="12.0" />
+                    </font>
+                </Label>
+
+                <Label fx:id="score" alignment="TOP_LEFT" layoutX="44.0" layoutY="21.0" text="0000" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
+                    <font>
+                        <Font name="Forte" size="12.0" />
+                    </font>
+                </Label>
+            <Label fx:id="timeLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="7.0" text="Time: " textAlignment="CENTER">
+               <font>
+                  <Font name="Forte" size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoreLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="21.0" text="Score:" textAlignment="CENTER">
+               <font>
+                  <Font name="Forte" size="12.0" />
+               </font>
+            </Label>
+            </AnchorPane>
+        </top>
+
+        <center>
+            <GridPane fx:id="board" alignment="CENTER" gridLinesVisible="true" prefHeight="500" prefWidth="500">
+                <rowConstraints>
+                    <RowConstraints maxHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints maxHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints maxHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints maxHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints minHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints minHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints minHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints minHeight="50.0" prefHeight="50.0" />
+                    <RowConstraints minHeight="50.0" prefHeight="50.0" />
+                </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                </columnConstraints>
+                <Label id="cell00" fx:id="cell00" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label id="cell01" fx:id="cell01" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label id="cell02" fx:id="cell02" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                <Label id="cell03" fx:id="cell03" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                <Label id="cell04" fx:id="cell04" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                <Label id="cell05" fx:id="cell05" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="0" />
+                <Label id="cell06" fx:id="cell06" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                <Label id="cell07" fx:id="cell07" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="0" />
+                <Label id="cell08" fx:id="cell08" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="0" />
+
+                <Label id="cell10" fx:id="cell10" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label id="cell11" fx:id="cell11" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label id="cell12" fx:id="cell12" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                <Label id="cell13" fx:id="cell13" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                <Label id="cell14" fx:id="cell14" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                <Label id="cell15" fx:id="cell15" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="1" />
+                <Label id="cell16" fx:id="cell16" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="1" />
+                <Label id="cell17" fx:id="cell17" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="1" />
+                <Label id="cell18" fx:id="cell18" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="1" />
+
+                <Label id="cell20" fx:id="cell20" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label id="cell21" fx:id="cell21" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label id="cell22" fx:id="cell22" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                <Label id="cell23" fx:id="cell23" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                <Label id="cell24" fx:id="cell24" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+                <Label id="cell25" fx:id="cell25" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+                <Label id="cell26" fx:id="cell26" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="2" />
+                <Label id="cell27" fx:id="cell27" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+                <Label id="cell28" fx:id="cell28" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="2" />
+
+                <Label id="cell30" fx:id="cell30" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label id="cell31" fx:id="cell31" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label id="cell32" fx:id="cell32" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                <Label id="cell33" fx:id="cell33" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                <Label id="cell34" fx:id="cell34" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="3" />
+                <Label id="cell35" fx:id="cell35" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+                <Label id="cell36" fx:id="cell36" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="3" />
+                <Label id="cell37" fx:id="cell37" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+                <Label id="cell38" fx:id="cell38" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+
+                <Label id="cell40" fx:id="cell40" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label id="cell41" fx:id="cell41" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label id="cell42" fx:id="cell42" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                <Label id="cell43" fx:id="cell43" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                <Label id="cell44" fx:id="cell44" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="4" />
+                <Label id="cell45" fx:id="cell45" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="4" />
+                <Label id="cell46" fx:id="cell46" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="4" />
+                <Label id="cell47" fx:id="cell47" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="4" />
+                <Label id="cell48" fx:id="cell48" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="4" />
+
+                <Label id="cell50" fx:id="cell50" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <Label id="cell51" fx:id="cell51" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label id="cell52" fx:id="cell52" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                <Label id="cell53" fx:id="cell53" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                <Label id="cell54" fx:id="cell54" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="5" />
+                <Label id="cell55" fx:id="cell55" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="5" />
+                <Label id="cell56" fx:id="cell56" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="5" />
+                <Label id="cell57" fx:id="cell57" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="5" />
+                <Label id="cell58" fx:id="cell58" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="5" />
+
+                <Label id="cell60" fx:id="cell60" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <Label id="cell61" fx:id="cell61" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                <Label id="cell62" fx:id="cell62" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                <Label id="cell63" fx:id="cell63" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                <Label id="cell64" fx:id="cell64" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="6" />
+                <Label id="cell65" fx:id="cell65" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="6" />
+                <Label id="cell66" fx:id="cell66" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="6" />
+                <Label id="cell67" fx:id="cell67" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="6" />
+                <Label id="cell68" fx:id="cell68" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="6" />
+
+                <Label id="cell70" fx:id="cell70" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                <Label id="cell71" fx:id="cell71" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                <Label id="cell72" fx:id="cell72" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                <Label id="cell73" fx:id="cell73" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                <Label id="cell74" fx:id="cell74" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="7" />
+                <Label id="cell75" fx:id="cell75" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="7" />
+                <Label id="cell76" fx:id="cell76" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="7" />
+                <Label id="cell77" fx:id="cell77" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="7" />
+                <Label id="cell78" fx:id="cell78" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="7" />
+
+                <Label id="cell80" fx:id="cell80" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                <Label id="cell81" fx:id="cell81" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                <Label id="cell82" fx:id="cell82" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="2" GridPane.rowIndex="8" />
+                <Label id="cell83" fx:id="cell83" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+                <Label id="cell84" fx:id="cell84" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="4" GridPane.rowIndex="8" />
+                <Label id="cell85" fx:id="cell85" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="5" GridPane.rowIndex="8" />
+                <Label id="cell86" fx:id="cell86" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="6" GridPane.rowIndex="8" />
+                <Label id="cell87" fx:id="cell87" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="7" GridPane.rowIndex="8" />
+                <Label id="cell88" fx:id="cell88" prefHeight="50.0" prefWidth="50.0" GridPane.columnIndex="8" GridPane.rowIndex="8" />
+            <BorderPane.margin>
+               <Insets bottom="20.0" />
+            </BorderPane.margin>
+            </GridPane>
+        </center>
+
+        <bottom>
+            <GridPane fx:id="numberSelection" alignment="CENTER" gridLinesVisible="true" prefHeight="50.0" prefWidth="500.0">
+                <Label id="number1" fx:id="number1" alignment="CENTER" contentDisplay="CENTER" prefHeight="50.0" prefWidth="50.0" text="1" GridPane.columnIndex="0" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number2" fx:id="number2" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="2" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number3" fx:id="number3" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="3" GridPane.columnIndex="2" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number4" fx:id="number4" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="4" GridPane.columnIndex="3" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number5" fx:id="number5" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="5" GridPane.columnIndex="4" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number6" fx:id="number6" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="6" GridPane.columnIndex="5" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number7" fx:id="number7" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="7" GridPane.columnIndex="6" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number8" fx:id="number8" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="8" GridPane.columnIndex="7" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <Label id="number9" fx:id="number9" alignment="CENTER" prefHeight="50.0" prefWidth="50.0" text="9" GridPane.columnIndex="8" GridPane.rowIndex="0">
+               <font>
+                  <Font name="Times New Roman Bold" size="24.0" />
+               </font></Label>
+                <rowConstraints>
+                    <RowConstraints minHeight="50.0" prefHeight="50.0" />
+                </rowConstraints>
+                <columnConstraints>
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                    <ColumnConstraints minWidth="50.0" prefWidth="50.0" />
+                </columnConstraints>
+            <BorderPane.margin>
+               <Insets bottom="20.0" />
+            </BorderPane.margin>
+            </GridPane>
+        </bottom>
+
+    </BorderPane>
+</StackPane>

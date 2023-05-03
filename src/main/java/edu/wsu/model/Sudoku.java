@@ -112,6 +112,10 @@ public class Sudoku {
         state = GameState.CHOICE;
     }
 
+    public void setNumber(int x, int y, int number) {
+        puzzle[y][x] = number;
+    }
+
     public int getChoice() {
         return choice;
     }
@@ -277,5 +281,9 @@ public class Sudoku {
             }
         }
         return true;
+    }
+
+    public void setScore(int i) {
+        this.score = i;
     }
 }

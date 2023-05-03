@@ -1,9 +1,10 @@
 package edu.wsu;
 
-import edu.wsu.Server.ShowDbChanges;
-import edu.wsu.view.Util;
+import edu.wsu.controller.DatabaseController;
+import edu.wsu.controller.LoginController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -11,16 +12,18 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("fxml/menu.fxml"));
-        stage.setScene(new Scene(menuLoader.load(), Util.SCENE_WIDTH, Util.SCENE_HEIGHT));
+        FXMLLoader loginLoader = new FXMLLoader(App.class.getResource("fxml/login.fxml"));
+        Parent root = loginLoader.load();
+        LoginController loginController = loginLoader.getController();
+        DatabaseController db = new DatabaseController();
+        loginController.setDatabaseController(db);
+        stage.setScene(new Scene(root));
         stage.setTitle("Sudoku");
         stage.setResizable(false);
         stage.show();
     }
 
     public static void main(String[] args) {
-        Thread t = new Thread(new ShowDbChanges());
-        t.start();
         launch();
     }
 }

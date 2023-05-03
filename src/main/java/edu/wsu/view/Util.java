@@ -8,8 +8,8 @@ public class Util {
 
     public static final double SCENE_WIDTH = 640;
     public static final double SCENE_HEIGHT = 480;
-    public static final String TITLE_FONT = "Blackadder ITC";
-    public static final String BASE_FONT = "Franklin Gothic Medium";
+    public static final String TITLE_FONT = "Forte";
+    public static final String BASE_FONT = "Times New Roman";
 
     public static Stage getStage(ActionEvent e) {
         return (Stage) ((Node) e.getSource()).getScene().getWindow();
