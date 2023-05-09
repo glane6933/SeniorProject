@@ -10,33 +10,51 @@
 
         <top>
             <AnchorPane fx:id="hud" prefHeight="142.0" prefWidth="500.0">
-                <Label fx:id="title" alignment="TOP_CENTER" layoutX="148.0" layoutY="35.0" text="Sudoku" textAlignment="CENTER" BorderPane.alignment="CENTER">
+                <Label fx:id="title" alignment="TOP_CENTER" layoutX="148.0" layoutY="71.0" text="Sudoku" textAlignment="CENTER" BorderPane.alignment="CENTER">
                     <font>
                         <Font name="Forte" size="64.0" />
                     </font>
                 </Label>
 
-                <Label fx:id="time" alignment="TOP_LEFT" layoutX="44.0" layoutY="7.0" text="0000" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
+                <Label fx:id="timeNumberLabel" alignment="TOP_LEFT" layoutX="58.0" layoutY="7.0" text="0000" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
                     <font>
-                        <Font name="Forte" size="12.0" />
+                        <Font name="Forte" size="18.0" />
                     </font>
                 </Label>
 
-                <Label fx:id="score" alignment="TOP_LEFT" layoutX="44.0" layoutY="21.0" text="0000" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
+                <Label fx:id="scoreNumberLabel" alignment="TOP_LEFT" layoutX="58.0" layoutY="24.0" text="0000" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
                     <font>
-                        <Font name="Forte" size="12.0" />
+                        <Font name="Forte" size="18.0" />
                     </font>
                 </Label>
-            <Label fx:id="timeLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="7.0" text="Time: " textAlignment="CENTER">
+
+                <Label fx:id="attemptNumberLabel" alignment="TOP_LEFT" layoutX="168.0" layoutY="42.0" text="3" textAlignment="CENTER" BorderPane.alignment="TOP_LEFT">
+                    <font>
+                        <Font name="Forte" size="18.0" />
+                    </font>
+                </Label>
+
+                <Label fx:id="timeWordLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="7.0" text="Time: " textAlignment="CENTER">
+                    <font>
+                        <Font name="Forte" size="18.0" />
+                    </font>
+                </Label>
+
+                <Label fx:id="scoreWordLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="24.0" text="Score:" textAlignment="CENTER">
+                    <font>
+                        <Font name="Forte" size="18.0" />
+                    </font>
+                </Label>
+
+                <Label fx:id="attemptWordLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="42.0" text="Attemps Remaining: " textAlignment="CENTER">
+                    <font>
+                        <Font name="Forte" size="18.0" />
+                    </font>
+                </Label>
+            <Button fx:id="menuButton" layoutX="395.0" layoutY="8.0" mnemonicParsing="false" onAction="#switchToMenu" style="-fx-background-color: LIGHTCORAL;" text="Exit to Menu">
                <font>
-                  <Font name="Forte" size="12.0" />
-               </font>
-            </Label>
-            <Label fx:id="scoreLabel" alignment="TOP_LEFT" layoutX="8.0" layoutY="21.0" text="Score:" textAlignment="CENTER">
-               <font>
-                  <Font name="Forte" size="12.0" />
-               </font>
-            </Label>
+                  <Font name="Times New Roman Bold Italic" size="14.0" />
+               </font></Button>
             </AnchorPane>
         </top>
 

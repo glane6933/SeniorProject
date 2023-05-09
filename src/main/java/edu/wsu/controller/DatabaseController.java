@@ -87,13 +87,15 @@ public class DatabaseController {
     }
 
     public boolean changeHighScore(int score) {
-        String changeHighScoreQuery = "UPDATE game_data SET high_score = ? WHERE username = ?";
+        int currentScore = getHighScore();
+        String changeHighScoreQuery = "UPDATE game_data SET high_score = (? + ?) WHERE username = ?";
         if(loggedInUser != null) {
             try (Connection conn = getDBConnection()) {
                 assert conn != null;
                 try (PreparedStatement statement = conn.prepareStatement(changeHighScoreQuery)) {
                     statement.setInt(1, score);
-                    statement.setString(2, loggedInUser);
+                    statement.setInt(2, currentScore);
+                    statement.setString(3, loggedInUser);
                     statement.executeUpdate();
                     return true;
                 }

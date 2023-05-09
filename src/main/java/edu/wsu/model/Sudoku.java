@@ -12,13 +12,10 @@ public class Sudoku {
     private boolean[][] check;
     private int choice;
     Difficulty difficulty;
-    private boolean numberSelected;
-    private int score;
 
 
     private Sudoku() {
         state = GameState.NOT_RUNNING;
-        score = 1000;
     }
 
     public static Sudoku getInstance() {
@@ -36,45 +33,24 @@ public class Sudoku {
         }
     }
 
-    public void update(double time) {
-        if(state == GameState.PAUSED) return;
-
-        if(time % 10 == 0) {
-            score -= 10;
-        }
-    }
-
     public void startNewGame() {
         createGrid();
         state = GameState.RUNNING;
-        score = 1000;
-        numberSelected = false;
         check = new boolean[BOARD_SIZE][BOARD_SIZE];
     }
 
     public void setDifficulty(Difficulty difficulty) {
-        switch(difficulty) {
-            case EASY:
-                this.difficulty = Difficulty.EASY;
-                // remove the least amount of numbers from solution
-                break;
-            case MEDIUM:
-                this.difficulty = Difficulty.MEDIUM;
-                // remove a medium amount of numbers from solution
-                break;
-            case HARD:
-                this.difficulty = Difficulty.HARD;
-                // remove the most amount of numbers from solution
-                break;
+        switch (difficulty) {
+            case EASY -> this.difficulty = Difficulty.EASY;
+
+            // remove the least amount of numbers from solution
+            case MEDIUM -> this.difficulty = Difficulty.MEDIUM;
+
+            // remove a medium amount of numbers from solution
+            case HARD -> this.difficulty = Difficulty.HARD;
+
+            // remove the most amount of numbers from solution
         }
-    }
-
-    public boolean isNumberSelected() {
-        return numberSelected;
-    }
-
-    public int getScore() {
-        return score;
     }
 
     public Difficulty getDifficulty() {
@@ -89,6 +65,10 @@ public class Sudoku {
         return solution;
     }
 
+    public int getSolutionNumber(int x, int y) {
+        return solution[y][x];
+    }
+
     public void createGrid() {
         //create a solution grid
         solution = createSolution(new int[BOARD_SIZE][BOARD_SIZE], 0);
@@ -97,19 +77,21 @@ public class Sudoku {
     }
 
     public void endGame() {
-        checkStatus();
         state = GameState.COMPLETED;
     }
 
-    public void checkIfGameOver() {
-        checkStatus();
-        choice = 0;
-        state = GameState.CHECK;
+    public boolean checkIfGameOver() {
+        if(checkStatus()) {
+            state = GameState.COMPLETED;
+            return true;
+        } else {
+            state = GameState.RUNNING;
+            return false;
+        }
     }
 
     public void setChoice(int choice) {
         this.choice = choice;
-        state = GameState.CHOICE;
     }
 
     public void setNumber(int x, int y, int number) {
@@ -120,21 +102,17 @@ public class Sudoku {
         return choice;
     }
 
-    public void checkStatus() {
+    public boolean checkStatus() {
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
-                check[i][j] = puzzle[i][j] == solution[i][j];
+                if(check[i][j] = puzzle[i][j] != solution[i][j]) {
+                    return false;
+                }
             }
         }
+        return true;
     }
 
-    /**
-     * Generates a solution to a possibly completed Sudoku puzzle.
-     *
-     * @param puzzle A 2D integer array representing the possibly completed Sudoku puzzle.
-     * @param idx    An integer representing the index of the next box to be filled in the puzzle.
-     * @return A 2D integer array representing the completed Sudoku puzzle, or an array of size 0x0 if no solution was found.
-     */
     public int[][] createSolution(int[][] puzzle, int idx) {
         if(idx>80) {
             return puzzle;
@@ -148,7 +126,7 @@ public class Sudoku {
         }
         Collections.shuffle(nums);
 
-        while(!nums.isEmpty()) {
+        while(nums.size() > 0) {
             int num = nextNum(puzzle, x, y, nums);
             if(num == -1) {
                 return null;
@@ -163,31 +141,19 @@ public class Sudoku {
         return null;
     }
 
-    /**
-     * Generates a new Sudoku puzzle by removing some numbers from the input puzzle.
-     *
-     * @param puzzle A 2D integer array representing a completed Sudoku puzzle.
-     * @return A new 2D integer array representing a partially completed Sudoku puzzle.
-     */
-    public int[][] createPuzzle(int[][] puzzle) {
+    public List<Integer> generatePlacesList() {
         List<Integer> places = new ArrayList<>();
         for(int i = 0; i < 81; i++) {
             places.add(i);
         }
         Collections.shuffle(places);
-        return createPuzzle(puzzle, places);
+        return places;
     }
 
-    /**
-     * Generates a new Sudoku puzzle by removing some numbers from the input puzzle
-     * based on a shuffled list of cell indices.
-     *
-     * @param puzzle A 2D integer array representing a completed Sudoku puzzle.
-     * @param places A list of shuffled integers representing cell indices in the 9x9 Sudoku grid.
-     * @return A new 2D integer array representing a possibly completed Sudoku puzzle.
-     */
-    public int[][] createPuzzle(int[][] puzzle, List<Integer> places) {
-        while(places.size() > 0) {
+    public int[][] createPuzzle(int[][] puzzle) {
+        List<Integer> places = generatePlacesList();
+        int removalCount = getRemovalCount(difficulty);
+        while(places.size() > removalCount) {
             int pos = places.remove(0);
             int x = pos % 9;
             int y = pos / 9;
@@ -199,6 +165,15 @@ public class Sudoku {
             }
         }
         return puzzle;
+    }
+
+    private int getRemovalCount(Difficulty difficulty) {
+        // Adjust the number of removed numbers based on the difficulty
+        return switch (difficulty) {
+            case EASY -> 30; //
+            case MEDIUM -> 15; //
+            case HARD -> 0; // 25, 25, 23, 25, 24
+        };
     }
 
     public boolean isValid(int[][] puzzle) {
@@ -217,7 +192,7 @@ public class Sudoku {
             for(int i = 1; i <= 9; i++) {
                 nums.add(i);
             }
-            while(!nums.isEmpty()) {
+            while(nums.size() > 0) {
                 int num = nextNum(puzzle, x, y, nums);
                 if(num == -1) {
                     break;
@@ -230,16 +205,24 @@ public class Sudoku {
                 }
                 puzzle[y][x] = 0;
             }
-        } else return isValid(puzzle, idx + 1, solutionNum);
+        } else if(!isValid(puzzle, idx+1, solutionNum)) {
+            return false;
+        }
         return true;
     }
 
     public int[][] duplicate(int[][] puzzle) {
-        return Arrays.copyOf(puzzle, puzzle.length);
+        int[][] tmp = new int[9][9];
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                tmp[i][j] = puzzle[i][j];
+            }
+        }
+        return tmp;
     }
 
     public int nextNum(int[][] puzzle, int x, int y, List<Integer> nums) {
-        while(!nums.isEmpty()) {
+        while(nums.size() > 0) {
             int num = nums.remove(0);
             if(checkX(puzzle, y, num) && checkY(puzzle, x, num) && checkBlock(puzzle, x, y, num)) {
                 return num;
@@ -281,9 +264,5 @@ public class Sudoku {
             }
         }
         return true;
-    }
-
-    public void setScore(int i) {
-        this.score = i;
     }
 }

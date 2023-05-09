@@ -1,112 +1,152 @@
 package edu.wsu.controller;
 
+import edu.wsu.App;
+import edu.wsu.model.Difficulty;
 import edu.wsu.model.GameState;
 import edu.wsu.model.Sudoku;
 import edu.wsu.view.GameOverPane;
+import edu.wsu.view.Util;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameController {
-
+    public Label attemptNumberLabel;
     private Sudoku sudoku;
-    public Label time;
-    public Label score;
-
+    private List<List<Label>> labelGrid;
+    private DatabaseController db;
     private boolean paused;
+    private int score;
     private long startTime;
     private int secondsElapsed;
+    private int attempts;
+    private double scoreDeduction;
     private Timeline timeline;
-    private int attempts = 3;
-
+    @FXML
+    private StackPane gameRoot;
     @FXML
     private GridPane board;
     @FXML
     private GridPane numberSelection;
-
-    private DatabaseController db;
-
-    private List<List<Label>> labelGrid;
-    private int[][] puzzle;
+    @FXML
+    private Label timeNumberLabel;
+    @FXML
+    private Label scoreNumberLabel;
+    private Pane pauseOverlay;
 
     public GameController() {
         sudoku = Sudoku.getInstance();
+        labelGrid = new ArrayList<>();
     }
 
-    public void startTimer() {
+    public void setDatabaseController(DatabaseController db) {
+        this.db = db;
+    }
+
+    public int attemptsFromDifficulty() {
+        if(sudoku.getDifficulty() == Difficulty.EASY) {
+            return 5;
+        } else if(sudoku.getDifficulty() == Difficulty.MEDIUM) {
+            return 4;
+        } else {
+            return 5;
+        }
+    }
+
+    public void start() {
+        sudoku.startNewGame();
+        attempts = attemptsFromDifficulty();
+        startTime = System.currentTimeMillis() / 1000;
+        paused = false;
+        pauseOverlay = createPauseOverlay();
+        setLabels();
+        startTimeline();
+        setScoreDeduction();
+    }
+
+    private void setScoreDeduction() {
+        if(sudoku.getDifficulty() == Difficulty.EASY) {
+            scoreDeduction = 4;
+            // each square is 100 points, 100 / 4 = 25 points
+        } else if(sudoku.getDifficulty() == Difficulty.MEDIUM) {
+            scoreDeduction = 2;
+            // each square is 100 points, 100 / 2 = 50 points
+        } else {
+            scoreDeduction = 1;
+            // each square is 100 points, 100 / 1 = 100 points
+        }
+    }
+
+    private void startTimeline() {
         secondsElapsed = 0;
-        updateTimerLabel();
+        updateHudLabels();
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             if(sudoku.state == GameState.COMPLETED) {
-                sudoku.endGame();
-                int score = (int) (10000.0 / secondsElapsed);
-                db.changeHighScore(score);
-                this.score.setText(String.valueOf(score));
-                updateLabels();
-                stopTimer();
+                stopTimeline();
             } else {
                 secondsElapsed++;
-                updateTimerLabel();
+                updateLabels();
+                updateHudLabels();
             }
+            gameRoot.getScene().addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+                if (e.getCode() == KeyCode.ESCAPE) {
+                    if(!paused) {
+                        timeline.pause();
+                        sudoku.togglePause();
+                        gameRoot.getChildren().add(pauseOverlay);
+                        paused = true;
+                    } else {
+                        timeline.play();
+                        sudoku.togglePause();
+                        gameRoot.getChildren().remove(pauseOverlay);
+                        paused = false;
+                    }
+                }
+            });
         }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
 
-    private void updateTimerLabel() {
-        time.setText(String.valueOf(secondsElapsed));
+    private Pane createPauseOverlay() {
+        StackPane overlay = new StackPane();
+        overlay.setStyle("-fx-background-color: rgba(0, 0, 0, 0.7);");
+
+        Label pausedLabel = new Label("Game Paused");
+        pausedLabel.setStyle("-fx-font-size: 24px; -fx-text-fill: white;");
+
+        Label unpauseLabel = new Label("Press Escape to Un-pause");
+        unpauseLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
+
+        VBox vbox = new VBox(10);
+        vbox.getChildren().addAll(pausedLabel, unpauseLabel);
+        vbox.setAlignment(Pos.CENTER);
+
+        overlay.getChildren().add(vbox);
+        overlay.setPrefSize(gameRoot.getWidth(), gameRoot.getHeight());
+
+        return overlay;
     }
 
-    public void stopTimer() {
-        timeline.stop();
-    }
-
-    public void setLabels() {
-        puzzle = sudoku.getPuzzle();
-        labelGrid = new ArrayList<>();
-        for(int i = 0; i < 9; i++) {
-            List<Label> row = new ArrayList<>();
-            for(int j = 0; j < 9; j++) {
-                Label label = (Label) board.lookup("#cell" + i + j);
-                int rowIdx = i;
-                int colIdx = j;
-                if(puzzle[rowIdx][colIdx] != 0) {
-                    label.setOnMouseClicked(null);
-                } else {
-                    label.setOnMouseClicked(event -> {
-                        int choice = sudoku.getChoice();
-                        if(choice != 0) {
-                            puzzle[rowIdx][colIdx] = choice;
-                            label.setText(Integer.toString(choice));
-                            sudoku.setChoice(0);
-                            sudoku.checkIfGameOver();
-                            if(puzzle[rowIdx][colIdx] != sudoku.getSolution()[rowIdx][colIdx]) {
-                                attempts--;
-                                if(attempts == 0) {
-                                    stopTimer();
-                                    int score = (int) (10000.0 / secondsElapsed);
-                                    db.changeHighScore(score);
-                                    this.score.setText(String.valueOf(score));
-                                    GameOverPane.show(score, secondsElapsed);
-                                    board.setVisible(false);
-                                    numberSelection.setVisible(false);
-                                }
-                            }
-                        }
-                    });
-                }
-                row.add(label);
-            }
-            labelGrid.add(row);
-        }
-
+    private void updateNumberSelection() {
         for(int i = 0; i < 9; i++) {
             Label label = (Label) numberSelection.lookup("#number" + (i+1));
             int choice = i + 1;
@@ -114,35 +154,86 @@ public class GameController {
         }
     }
 
-    public void updateLabels() {
+    private void updateLabels() {
+        updateNumberSelection();
         for(int i = 0; i < 9; i++) {
+            List<Label> row = new ArrayList<>();
             for(int j = 0; j < 9; j++) {
-                int number = puzzle[i][j];
-                Label label = labelGrid.get(i).get(j);
-                label.setText(number == 0 ? "" : Integer.toString(number));
+                Label label = (Label) board.lookup("#cell" + i + j);
+                if(sudoku.getPuzzle()[i][j] == sudoku.getSolution()[i][j]) {
+                    label.setOnMouseClicked(null);
+                } else {
+                    int colIdx = j;
+                    int rowIdx = i;
+                    label.setOnMouseClicked(event -> {
+                        if(sudoku.state == GameState.COMPLETED) {
+                            return;
+                        }
+                        int choice = sudoku.getChoice();
+                        if(choice != 0) {
+                            label.setText(Integer.toString(choice));
+                            sudoku.setNumber(colIdx, rowIdx, choice);
+                            if(choice != sudoku.getSolutionNumber(colIdx, rowIdx)) {
+                                attempts--;
+                                label.setBackground(Background.fill(Color.LIGHTCORAL));
+                                if(attempts == 0) {
+                                    sudoku.endGame();
+                                    updateHudLabels();
+                                    GameOverPane.show(score, secondsElapsed, 2);
+                                }
+                            } else {
+                                label.setBackground(Background.fill(Color.LIGHTGREEN));
+                                score += 100 / scoreDeduction;
+                                if(sudoku.checkIfGameOver()) {
+                                    sudoku.endGame();
+                                    db.changeHighScore(score);
+                                    updateHudLabels();
+                                    GameOverPane.show(score, secondsElapsed, 1);
+                                }
+                            }
+                            sudoku.setChoice(0);
+                        }
+                    });
+                }
+                row.add(label);
             }
+            labelGrid.add(row);
         }
-
-        long elapsedTime = (System.currentTimeMillis() / 1000) - startTime;
-        int scoreValue = (int) (10000.0 / elapsedTime);
-        score.setText(String.valueOf(scoreValue));
-        time.setText(String.valueOf(elapsedTime));
     }
 
-    public void togglePause() {
-        sudoku.togglePause();
+    private void stopTimeline() {
+        timeline.stop();
     }
 
-    public void start() {
-        sudoku.startNewGame();
-        puzzle = sudoku.getPuzzle();
-        setLabels();
-        updateLabels();
-        startTime = System.currentTimeMillis() / 1000;
-        startTimer();
+    private void updateHudLabels() {
+        timeNumberLabel.setText(String.valueOf(secondsElapsed));
+        scoreNumberLabel.setText(String.valueOf(score));
+        attemptNumberLabel.setText(String.valueOf(attempts));
     }
 
-    public void setDatabaseController(DatabaseController db) {
-        this.db = db;
+    private void setLabels() {
+        for(int i = 0; i < 9; i++) {
+            List<Label> row = new ArrayList<>();
+            for(int j = 0; j < 9; j++) {
+                Label label = (Label) board.lookup("#cell" + i + j);
+                label.setFont(Font.font("Times New Roman", 24));
+                label.setAlignment(Pos.CENTER);
+                if(sudoku.getPuzzle()[i][j] != 0) {
+                    label.setText(String.valueOf(sudoku.getPuzzle()[i][j]));
+                    label.setBackground(Background.fill(Color.LIGHTGREEN));
+                }
+                row.add(label);
+            }
+            labelGrid.add(row);
+        }
+    }
+
+    public void switchToMenu(ActionEvent e) throws IOException {
+        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("fxml/menu.fxml"));
+        Parent root = menuLoader.load();
+        MenuController menuController = menuLoader.getController();
+        menuController.setDatabaseController(db);
+        Util.getStage(e).setScene(new Scene(root));
+        menuController.username.setText(db.getLoggedInUser());
     }
 }
