@@ -86,6 +86,7 @@ public class MenuController {
         FXMLLoader logoutLoader = new FXMLLoader(App.class.getResource("fxml/login.fxml"));
         Parent root = logoutLoader.load();
         Util.getStage(actionEvent).setScene(new Scene(root));
+        db.logout();
     }
 
     public void openHowToPlay(ActionEvent actionEvent) throws IOException {
