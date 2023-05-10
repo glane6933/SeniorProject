@@ -23,11 +23,7 @@ G.idea/sonarlint/issuestore/a/5/a5cc2925ca8258af241be7e5b0381edf30266302,e\d\ed
 Y
 )src/main/java/edu/wsu/view/PausePane.java,5\2\52a697cc15ce5cda6104d8cd9263d6e74dbc4a53
 N
-src/main/java/edu/wsu/App.java,6\5\659cb4285f84d709d83da79ea4d9eb51965761b0
-N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 h
 8src/main/java/edu/wsu/controller/RegisterController.java,6\9\695055e3bc98044fe990906f2b30f2a510970493
 T

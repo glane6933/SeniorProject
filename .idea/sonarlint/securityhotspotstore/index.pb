@@ -19,10 +19,6 @@ N
 src/main/java/module-info.java,1\c\1c89a5491fbfda3fb050196d6a239f20200296e7
 T
 $src/main/java/edu/wsu/view/Util.java,e\c\ecfb0285ccd13f90d987fc5ecd043b5a714e3e42
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-N
-src/main/java/edu/wsu/App.java,6\5\659cb4285f84d709d83da79ea4d9eb51965761b0
 k
 ;src/main/java/edu/wsu/controller/LeaderboardController.java,1\8\184f1dfc5b6fa05f94abfcef11067abc0bb66ef2
 U
