@@ -1,0 +1,12 @@
+
+v
+java:S1104"YMake usernameField a static final constant or non-public and provide accessors if needed.(Ğü¨8İÍµìı0
+x
+java:S1104"VMake emailField a static final constant or non-public and provide accessors if needed.(şãÓâúÿÿÿÿ8ŞÍµìı0
+v
+java:S1104"YMake passwordField a static final constant or non-public and provide accessors if needed.(˜¸¢ü8ŞÍµìı0
+n
+java:S1104"QMake popup a static final constant or non-public and provide accessors if needed.(ãüØ8Ä…Åìı0
+U	java:S106"9Replace this use of System.out or System.err by a logger.(ß©±¤8îÍµìı0
+O
+java:S1128"-Remove this unused import 'javafx.fxml.FXML'.(ÃÚ¢„şÿÿÿÿ8Œ€¶ìı0

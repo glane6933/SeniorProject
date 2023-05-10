@@ -64,12 +64,6 @@ public class MenuController {
             case "Hard" -> sudoku.setDifficulty(Difficulty.HARD);
         }
 
-//        FXMLLoader menuLoader = new FXMLLoader(App.class.getResource("fxml/menu.fxml"));
-//        Parent root = menuLoader.load();
-//        MenuController menuController = menuLoader.getController();
-//        menuController.setDatabaseController(db);
-//        Util.getStage(e).setScene(new Scene(root));
-
         FXMLLoader gameLoader = new FXMLLoader(App.class.getResource("fxml/game.fxml"));
         Parent root = gameLoader.load();
         GameController gameController = gameLoader.getController();
